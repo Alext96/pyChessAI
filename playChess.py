@@ -22,9 +22,7 @@ class Valuator(object):
     output = self.model(torch.tensor(brd).float())
     return float(output.data[0][0])
 
-# let's write a simple chess value function
-# discussing with friends how simple a minimax + value function can beat me
-# i'm rated about a 1500
+# simple minimax + value function
 
 MAXVAL = 10000
 class ClassicValuator(object):
@@ -43,8 +41,6 @@ class ClassicValuator(object):
     self.count = 0
 
   # writing a simple value function based on pieces
-  # good ideas:
-  # https://en.wikipedia.org/wiki/Evaluation_function#In_chess
   def __call__(self, s):
     self.count += 1
     key = s.key()
@@ -73,7 +69,7 @@ class ClassicValuator(object):
       else:
         val -= tval
 
-    # add a number of legal moves term
+    # add a number of legal moves
     bak = b.turn
     b.turn = chess.WHITE
     val += 0.1 * b.legal_moves.count()
@@ -138,7 +134,7 @@ def explore_leaves(s, v):
   print("%.2f -> %.2f: explored %d nodes in %.3f seconds %d/sec" % (bval, cval, v.count, eta, int(v.count/eta)))
   return ret
 
-# chess board and "engine"
+# chess board/engine
 s = State()
 #v = Valuator()
 v = ClassicValuator()
@@ -198,7 +194,7 @@ def move():
       )
       return response
   else:
-    print("GAME IS OVER")
+    print("CHECK MATE")
     response = app.response_class(
       response="game over",
       status=200
@@ -230,7 +226,7 @@ def move_coordinates():
     )
     return response
 
-  print("GAME IS OVER")
+  print("CHECK MATE")
   response = app.response_class(
     response="game over",
     status=200
