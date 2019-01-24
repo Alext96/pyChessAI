@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env pypy
 import chess
 
 class State(object):
@@ -11,8 +11,9 @@ class State(object):
   def key(self):
     return (self.board.board_fen(), self.board.turn, self.board.castling_rights, self.board.ep_square)
 
+
   def serialize(self):
-    import numpy as np
+    import _numpypy as np
     assert self.board.is_valid()
 
     bstate = np.zeros(64, np.uint8)
@@ -52,8 +53,9 @@ class State(object):
     # 4th column is who's turn it is
     state[4] = (self.board.turn*1.0)
 
-    # 257 bits according to readme
+    # 257 bits
     return state
+
 
   def edges(self):
     return list(self.board.legal_moves)

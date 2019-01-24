@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env pypy
 from __future__ import print_function
 import os
 import chess
@@ -6,8 +6,8 @@ import time
 import chess.svg
 import traceback
 import base64
-from stateInterpret import State
 
+from stateInterpret import State
 
 class Valuator(object):
     def __init__(self):
@@ -85,7 +85,8 @@ class ClassicValuator(object):
 
 
 def computer_minimax(s, v, depth, a, b, big=False):
-    if depth >= 5 or s.board.is_game_over():
+    #specify ply depth, shorter depth = faster evaluation
+    if depth >= 3 or s.board.is_game_over():
         return v(s)
     # white is maximizing player
     turn = s.board.turn
@@ -105,9 +106,12 @@ def computer_minimax(s, v, depth, a, b, big=False):
     move = sorted(isort, key=lambda x: x[0], reverse=s.board.turn)
 
     # beam search beyond depth 3
-    #if depth >= 0:
-    #always beam search
-    move = move[:5]
+    if depth >= 3:
+        move = move[:15]
+    # if depth >= 0:
+    # always beam search
+    # currently always beam searching, remove commentented "if" for minimax/mixed method
+
 
     for e in [x[1] for x in move]:
         s.board.push(e)

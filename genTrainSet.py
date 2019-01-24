@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env pypy
 import os
 import chess.pgn
 import numpy as np
@@ -34,6 +34,6 @@ def get_dataset(num_samples=None):
   return X,Y
 
 if __name__ == "__main__":
-  X,Y = get_dataset(10000)
-  np.savez("dataset_25M.npz", X, Y)
+  X,Y = get_dataset(30000000)
+  np.savez("dataset_30M.npz", X, Y)
 
